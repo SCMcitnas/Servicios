@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Santiago\\Source\\Repos\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj": {}
+    "C:\\Users\\Santiago\\Source\\Repos\\Servicios\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Santiago\\Source\\Repos\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj": {
+    "C:\\Users\\Santiago\\Source\\Repos\\Servicios\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Santiago\\Source\\Repos\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj",
+        "projectUniqueName": "C:\\Users\\Santiago\\Source\\Repos\\Servicios\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj",
         "projectName": "Serv_Suf_Ejer5",
-        "projectPath": "C:\\Users\\Santiago\\Source\\Repos\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj",
+        "projectPath": "C:\\Users\\Santiago\\Source\\Repos\\Servicios\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5.csproj",
         "packagesPath": "C:\\Users\\Santiago\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Santiago\\Source\\Repos\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\obj\\",
+        "outputPath": "C:\\Users\\Santiago\\Source\\Repos\\Servicios\\Serv_Suf_Ejer5\\Serv_Suf_Ejer5\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Santiago\\AppData\\Roaming\\NuGet\\NuGet.Config",
