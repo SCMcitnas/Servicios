@@ -1,4 +1,6 @@
-﻿namespace Serv_Suf_Ejer5;
+﻿using System.Text;
+
+namespace Serv_Suf_Ejer5;
 
 public class Program
 {
@@ -39,6 +41,7 @@ public class Program
         
         int avance=0;
         int posicionEsteCaballo=posicionCaballo;
+        
 
         while (!terminar)
         {
@@ -76,119 +79,127 @@ public class Program
         bool repetir = false;
         String opcion;
         String path = Environment.GetEnvironmentVariable("appdata") + "\\datos.bin";
-
+        Encoding unicode = Encoding.Unicode;
+        String premio;
 
         Thread thread = new Thread(() => carrera(""));
 
-        
+        Console.WriteLine("Bienvenido\nIntroduzca su edad:");
+        edad = Convert.ToInt16(Console.ReadLine());
 
-            Console.WriteLine("Bienvenido\nIntroduzca su edad:");
-            edad = Convert.ToInt16(Console.ReadLine());
-
-            do
+        do
+        {
+            if (edad >= 18)
             {
-                if (edad >= 18)
+                do
                 {
-                    do
+                    Console.WriteLine("Introduzca su apuesta| Caballos: (" + String.Join(" | ", recuentoCaballos()) + ")");
+                    apuesta = Console.ReadLine().ToLower().Trim();
+                    foreach (String caballo in recuentoCaballos())
                     {
-                        Console.WriteLine("Introduzca su apuesta| Caballos: (" + String.Join(" | ", recuentoCaballos()) + ")");
-                        apuesta = Console.ReadLine().ToLower().Trim();
-                        foreach (String caballo in recuentoCaballos())
+                        if (apuesta == caballo)
                         {
-                            if (apuesta == caballo)
-                            {
-                                correcto = true;
-                            }
+                            correcto = true;
                         }
+                    }
 
-                        if (!correcto)
-                        {
-                            Console.WriteLine("Nombre del caballo incorrecto");
-                        }
+                    if (!correcto)
+                    {
+                        Console.WriteLine("Nombre del caballo incorrecto");
+                    }
 
-                    } while (!correcto);
+                } while (!correcto);
 
-                    Console.Clear();
+                Console.Clear();
+            }
+            else
+            {
+                Console.WriteLine("Juego prohibido para menores de edad");
+                Environment.Exit(1);
+            }
+
+            foreach (String caballo in recuentoCaballos())
+            {
+                if (posicionCaballo != 0)
+                {
+                    lock (l)
+                    {
+                        Monitor.Wait(l);
+                    }
+                }
+
+                posicionCaballo++;
+
+                thread = new Thread(() => carrera(caballo));
+
+
+                thread.Start();
+
+            }
+
+            thread.Join();
+
+            Console.Clear();
+            Console.WriteLine("Ganador: " + ganador);
+
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(path, FileMode.Append)))
+            {
+
+                bw.Write(ganador);
+                bw.Write(edad);
+
+                if (apuesta == ganador)
+                {
+                    Console.WriteLine("Usted ha ganado la apuesta");
+                    premio = "El usuario gano la apuesta";
                 }
                 else
                 {
-                    Console.WriteLine("Juego prohibido para menores de edad");
-                    Environment.Exit(1);
+                    Console.WriteLine("Su apuesta fue incorrecta");
+                    premio = "El usuario perdio la apuesta";
                 }
 
-                foreach (String caballo in recuentoCaballos())
+                bw.Write(premio);
+            }
+
+            do
+            {
+                Console.WriteLine("¿Quiere repetir el juego? (Y/N)");
+                opcion = Console.ReadLine();
+                if (opcion.ToLower().Trim() == "y")
                 {
-                    if (posicionCaballo != 0)
+                    posicionCaballo = 0;
+                    terminar = false;
+                    repetir = true;
+                }
+                else if (opcion.ToLower().Trim() == "n")
+                {
+                    using (BinaryReader br = new BinaryReader(new FileStream(path, FileMode.Open)))
                     {
-                        lock (l)
+                        int pos = 0;
+                        int lenght = (int)br.BaseStream.Length;
+                        while(pos<lenght)
                         {
-                            Monitor.Wait(l);
-                        }
-                    }
+                            
+                            Console.WriteLine(br.ReadString());
+                            Console.WriteLine(br.ReadInt32());
 
-                    posicionCaballo++;
-
-                    thread = new Thread(() => carrera(caballo));
-
-
-                    thread.Start();
-
-                }
-
-                thread.Join();
-
-                Console.Clear();
-                Console.WriteLine("Ganador: " + ganador);
-
-                using (FileStream fs = new FileStream(path, FileMode.Append))
-                {
-
-                    //fs.WriteByte(Convert.ToByte(ganador));
-                    fs.WriteByte(Convert.ToByte(edad));
-
-
-                    if (apuesta == ganador)
-                    {
-                        Console.WriteLine("Usted ha ganado la apuesta");
-                        //fs.WriteByte(Convert.ToByte("El usuario gano la apuesta"));
-                    }
-                    else
-                    {
-                        Console.WriteLine("Su apuesta fue incorrecta");
-                        //fs.WriteByte(Convert.ToByte("El usuario perdio la apuesta"));
-                    }
-                }
-
-                do
-                {
-                    Console.WriteLine("¿Quiere repetir el juego? (Y/N)");
-                    opcion = Console.ReadLine();
-                    if (opcion.ToLower().Trim() == "y")
-                    {
-                        posicionCaballo = 0;
-                        terminar = false;
-                        repetir = true;
-                    }
-                    else if (opcion.ToLower().Trim() == "n")
-                    {
-                        using (FileStream fs = new FileStream(path, FileMode.Open))
-                        {
-                            for (long i = 0; i < fs.Length; i++)
-                            {
-                                Console.WriteLine(fs.ReadByte());
-                            }
+                            pos += br.ReadString().Length;
+                            pos += br.ReadInt32();
                         }
                         
-                        repetir = false;
                     }
-                    else
-                    {
-                        Console.WriteLine("Opcion incorrecta, pruebe de nuevo");
-                    }
-                } while (opcion.ToLower().Trim() != "y" && opcion.ToLower().Trim() != "n");
 
-            } while (repetir);
+                    repetir = false;
+                }
+                else
+                {
+                    Console.WriteLine("Opcion incorrecta, pruebe de nuevo");
+                }
+            } while (opcion.ToLower().Trim() != "y" && opcion.ToLower().Trim() != "n");
 
-        
+        } while (repetir);
+
+
     }
 }
