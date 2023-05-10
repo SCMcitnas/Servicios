@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq.Expressions;
+using System.Text;
 
 namespace Serv_Suf_Ejer5;
 
@@ -59,14 +60,12 @@ public class Program
                         terminar = true;
                         ganador = nombre;
                     }
-                    else
-                    {
-                        Monitor.Pulse(l);
-                        Thread.Sleep(random.Next(500, 1000));
-                    }
 
+                    Monitor.Pulse(l);
                 }
             }
+            Thread.Sleep(random.Next(50, 200));
+            
         }
     }
 
@@ -79,7 +78,6 @@ public class Program
         bool repetir = false;
         String opcion;
         String path = Environment.GetEnvironmentVariable("appdata") + "\\datos.bin";
-        Encoding unicode = Encoding.Unicode;
         String premio;
 
         Thread thread = new Thread(() => carrera(""));
@@ -110,7 +108,7 @@ public class Program
 
                 } while (!correcto);
 
-                Console.Clear();
+              Console.Clear();
             }
             else
             {
@@ -139,7 +137,7 @@ public class Program
 
             thread.Join();
 
-            Console.Clear();
+            Console.SetCursorPosition(0, posicionCaballo + 1);
             Console.WriteLine("Ganador: " + ganador);
 
             using (BinaryWriter bw = new BinaryWriter(new FileStream(path, FileMode.Append)))
@@ -178,16 +176,20 @@ public class Program
                     {
                         int pos = 0;
                         int lenght = (int)br.BaseStream.Length;
-                        while(pos<lenght)
+                        try
                         {
-                            
-                            Console.WriteLine(br.ReadString());
-                            Console.WriteLine(br.ReadInt32());
+                            while (true)
+                            {
 
-                            pos += br.ReadString().Length;
-                            pos += br.ReadInt32();
+                                Console.WriteLine(br.ReadString());
+                                Console.WriteLine(br.ReadInt32());
+                                Console.WriteLine(br.ReadString());
+                                Console.WriteLine("\n");
+                            }
+                        }catch(EndOfStreamException ex)
+                        {
+
                         }
-                        
                     }
 
                     repetir = false;
