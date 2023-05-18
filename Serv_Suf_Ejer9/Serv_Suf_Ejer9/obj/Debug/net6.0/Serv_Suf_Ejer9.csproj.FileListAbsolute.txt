@@ -1,0 +1,15 @@
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\bin\Debug\net6.0\Serv_Suf_Ejer9.exe
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\bin\Debug\net6.0\Serv_Suf_Ejer9.deps.json
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\bin\Debug\net6.0\Serv_Suf_Ejer9.runtimeconfig.json
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\bin\Debug\net6.0\Serv_Suf_Ejer9.dll
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\bin\Debug\net6.0\Serv_Suf_Ejer9.pdb
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.csproj.AssemblyReference.cache
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.AssemblyInfoInputs.cache
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.AssemblyInfo.cs
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.csproj.CoreCompileInputs.cache
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.dll
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\refint\Serv_Suf_Ejer9.dll
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.pdb
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\Serv_Suf_Ejer9.genruntimeconfig.cache
+C:\Users\Santiago\Source\Repos\Serv_Suf_Ejer9\Serv_Suf_Ejer9\obj\Debug\net6.0\ref\Serv_Suf_Ejer9.dll
