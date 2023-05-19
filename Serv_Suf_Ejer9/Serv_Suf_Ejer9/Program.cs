@@ -9,8 +9,7 @@ class Program
     static void Main(string[] args)
     {
         IPEndPoint ie = new IPEndPoint(IPAddress.Any, 31416);
-        using (Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream,
-        ProtocolType.Tcp))
+        using (Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         {
             s.Bind(ie);
             s.Listen(10);
@@ -23,30 +22,62 @@ class Program
             using (StreamWriter sw = new StreamWriter(ns))
             {
 
+                sw.WriteLine("Bienvenido al servidor");
+                sw.Flush();
+
                 string msg = "";
-                while (msg != null)
+                if (msg != null)
                 {
                     try
                     {
+                        
                         msg = sr.ReadLine();
 
                         switch (msg)
                         {
                             case "time":
-                                sw.WriteLine(String.Format("{0}", DateTime.Now));
+                                sw.WriteLine(String.Format("{0}", TimeOnly.FromDateTime(DateTime.Now)));
                                 sw.Flush();
                                 break;
 
                             case "date":
+                                sw.WriteLine(String.Format("{0}", DateOnly.FromDateTime(DateTime.Now)));
+                                sw.Flush();
                                 break;
 
                             case "all":
+                                sw.WriteLine(String.Format("{0}", DateTime.Now));
+                                sw.Flush();
                                 break;
 
-                            case "close":
+                            case String closeCase when closeCase.StartsWith("close "):
+
+                                String passWrit = closeCase.Substring(6);
+                                String pass;
+
+                                using (StreamReader sr2 = new StreamReader(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%") + "\\contraseña.txt"))
+                                {
+                                    pass = sr2.ReadToEnd();
+                                }
+
+                                if(passWrit == pass)
+                                {
+                                    sw.WriteLine("Contraseña correcta");
+                                    sw.Flush();
+                                    Console.WriteLine("Acerto la contraseña");
+                                }
+                                else
+                                {
+                                    sw.WriteLine("Contraseña incorrecta");
+                                    sw.Flush();
+                                    Console.WriteLine("Fallo la contraseña");
+                                }
+
                                 break;
 
                             default:
+                                sw.WriteLine("Opcion incorrecta");
+                                sw.Flush();
                                 break;
                         }
                     }
@@ -56,6 +87,7 @@ class Program
                     }
                 }
                 Console.WriteLine("Client disconnected.\nConnection closed");
+
             }
             sClient.Close(); // Este no se abre con using, pues lo devuelve el accept.
         }
