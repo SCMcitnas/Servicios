@@ -12,60 +12,117 @@ namespace Serv_Suf_Ejer10
     {
         readonly object l = new object();
 
+        String pathApp = Environment.GetEnvironmentVariable("appdata") + "\\historialNumeros.txt";
+
         List<Socket> list = new List<Socket>();
         Socket s;
 
         Random random = new Random();
         List<double> numeros = new List<double>();
         double numero;
-        int tiempo=10;
+        double numeroM=0;
+        String ipM;
+        String puertoM;
+        String junto;
+
+        List<String> ips = new List<string>();
+        List<String> puertos = new List<string>();
+
+        int tiempo = 10;
+
         bool terminar = false;
+        
 
-
-        public void hiloTiempo()
+        public void hiloSuprm()
         {
-            lock (l)
+            do
             {
-                
-            }
-        }
+                tiempo--;
 
-        public void hilo(object socket)
-        {
-
-            Socket socketC = (Socket)socket;
-
-            using (NetworkStream ns = new NetworkStream(socketC))
-            using (StreamReader sr = new StreamReader(ns))
-            using (StreamWriter sw = new StreamWriter(ns))
-            {
-                while (tiempo != 0)
+                try
                 {
-                    tiempo--;
-                    sw.WriteLine("Quedan " + tiempo + " segundos");
-                    sw.Flush();
-                    lock (l)
+                    foreach(Socket sockt in list)
                     {
-                        Thread.Sleep(1000);
+                        IPEndPoint ieCliente = (IPEndPoint)sockt.RemoteEndPoint;
+                        using (NetworkStream ns = new NetworkStream(sockt))
+                        using (StreamReader sr = new StreamReader(ns))
+                        using (StreamWriter sw = new StreamWriter(ns))
+                        {
+                            lock (l)
+                            {
+                                sw.WriteLine("Quedan " + tiempo + " segundos");
+                                sw.Flush();
+
+
+                                if (tiempo == 0)
+                                {
+                                    numero = random.Next(1, 20);
+                                    sw.WriteLine("Su numero es: " + numero);
+                                    sw.Flush();
+
+                                    numeros.Add(numero);
+                                    ips.Add(ieCliente.Address.ToString());
+                                    puertos.Add(ieCliente.Port.ToString());
+
+                                }
+
+                            }
+                        }
 
                     }
-                    
 
-                    
-
-                    if (tiempo == 0)
-                    {
-                        numero = random.Next(1, 20);
-                        sw.WriteLine("Su numero es: " + numero);
-                        sw.Flush();
-
-                        numeros.Add(numero);
-
-                        socketC.Close();
-                    }
-
-                    
                 }
+                catch (IOException ex)
+                {
+
+                }
+
+                Thread.Sleep(1000);
+
+
+            } while (tiempo != 0);
+
+            for (int i = 0; i < numeros.Count; i++)
+            {
+                if (numeros[i] > numeroM)
+                {
+                    numeroM = numeros[i];
+                    ipM = ips[i];
+                    puertoM = puertos[i];
+                    junto=ipM+" "+puertoM;
+                }
+                else if (numeros[i] == numeroM)
+                {
+                    junto += ", " + ips[i]+" " + puertos[i];
+                }
+            }
+
+            foreach(Socket socktM in list)
+            {
+                try
+                {
+                    using (NetworkStream ns = new NetworkStream(socktM))
+                    using (StreamReader sr = new StreamReader(ns))
+                    using (StreamWriter sw = new StreamWriter(ns))
+                    {
+                        lock (l)
+                        {
+                            sw.WriteLine("El ganador es " + junto + " con el numero " + numeroM);
+                            sw.Flush();
+
+                            socktM.Close();
+                        }
+                    }
+                }
+                catch (IOException ex)
+                {
+
+                }
+            }
+
+            using(StreamWriter sw = new StreamWriter(pathApp, true))
+            {
+                sw.WriteLine(DateTime.Now+" -> El ganador fue "+junto+" con el numero "+numeroM);
             }
         }
 
@@ -86,7 +143,7 @@ namespace Serv_Suf_Ejer10
             }
 
             s.Bind(ie);
-            s.Listen(10); //Ilimitado
+            s.Listen(10);
             Console.WriteLine($"Server listening at port:{ie.Port}");
 
             do
@@ -95,17 +152,18 @@ namespace Serv_Suf_Ejer10
                 {
                     Socket sCliente = s.Accept();
                     list.Add(sCliente);
-                    if(list.Count >= 2)
+
+                    if(list.Count > 1)
                     {
-                        Thread hiloC = new Thread(hilo);
-                        //Thread hiloT = new Thread(hiloTiempo);
-                        hiloC.Start(sCliente);
-                       // hiloT.Start();
+                        Thread hilo = new Thread(hiloSuprm);
+                        hilo.Start();
                     }
+
+                    
                 } 
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Fallo main");
+                    Console.WriteLine(ex.Message);
                 }
             } while (!terminar);
         }

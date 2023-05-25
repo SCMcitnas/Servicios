@@ -11,7 +11,5 @@ class Program
 		Juego juego = new Juego();
 		juego.Init();
 
-
-
     }
 }
