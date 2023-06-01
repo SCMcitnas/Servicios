@@ -1,6 +1,6 @@
 ﻿namespace Serv_Suf_Ejer9_C
 {
-    partial class Service1
+    partial class ServEjer9
     {
         /// <summary> 
         /// Variable del diseñador necesaria.

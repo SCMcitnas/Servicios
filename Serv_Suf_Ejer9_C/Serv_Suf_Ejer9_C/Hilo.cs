@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Serv_Suf_Ejer9_C
 {
@@ -13,10 +14,10 @@ namespace Serv_Suf_Ejer9_C
     {
         readonly object l = new object();
 
-        bool termina = false;
-        Socket s;
+        public bool termina = false;
+        public Socket s;
 
-        void hilo(Socket socket)
+        public void hilo(Socket socket)
         {
             IPEndPoint ieClient = (IPEndPoint)socket.RemoteEndPoint;
             Console.WriteLine("Client connected:{0} at port {1}", ieClient.Address, ieClient.Port);
@@ -97,4 +98,50 @@ namespace Serv_Suf_Ejer9_C
             }
             socket.Close();
         }
+
+        public void Init()
+        {
+            int puerto = 31416;
+            bool valido = false;
+
+
+            s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            IPEndPoint ie = null;
+            do
+            {
+                try
+                {
+                    ie = new IPEndPoint(IPAddress.Any, puerto);
+                    valido = true;
+                }
+                catch (SocketException ex)
+                {
+                    puerto++;
+                    valido = false;
+                }
+            } while (!valido);
+
+
+            s.Bind(ie);
+            s.Listen(10);
+            Console.WriteLine($"Server listening at port:{ie.Port}");
+
+            do
+            {
+                try
+                {
+                    Socket sClient = s.Accept();
+                    Thread lanzar = new Thread(() => hilo(sClient));
+                    lanzar.Start();
+                }
+                catch (System.Net.Sockets.SocketException ex)
+                {
+
+                }
+
+            } while (!termina);
+
+        }
+    }
 }
